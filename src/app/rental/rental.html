@@ -1,0 +1,56 @@
+<div class="rental-container">
+
+  <h2>Rent Vehicle</h2>
+
+  <h3>
+    {{ vehicle.brand }} {{ vehicle.model }}
+  </h3>
+
+  <p>
+    <strong>Vehicle Number:</strong>
+    {{ vehicle.vehicleNumber }}
+  </p>
+
+  <p>
+    <strong>Price Per Day:</strong>
+    ₹{{ vehicle.pricePerDay }}
+  </p>
+
+  <label>Customer Name</label>
+
+  <input
+    type="text"
+    [(ngModel)]="customerName"
+    placeholder="Enter customer name"
+  />
+
+  <label>Rental Days</label>
+
+  <input
+    type="number"
+    [(ngModel)]="rentalDays"
+    min="1"
+  />
+
+  <p>
+    <strong>Total Amount:</strong>
+    ₹{{ totalAmount }}
+  </p>
+
+  <button (click)="rentVehicle()">
+    Confirm Rental
+  </button>
+
+  @if (message) {
+    <p class="success">
+      {{ message }}
+    </p>
+  }
+
+  @if (errorMessage) {
+    <p class="error">
+      {{ errorMessage }}
+    </p>
+  }
+
+</div>

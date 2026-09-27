@@ -1,0 +1,55 @@
+<div class="rental-history-container">
+
+  <h2>Rental History</h2>
+
+  @if (message) {
+    <p class="success-message">
+      {{ message }}
+    </p>
+  }
+
+  @if (errorMessage) {
+    <p class="error-message">
+      {{ errorMessage }}
+    </p>
+  }
+
+  <div class="rental-grid">
+
+    @for (rental of rentals(); track rental.id)  {
+
+      <div class="rental-card">
+
+        <h3>Rental #{{ rental.id }}</h3>
+
+        <p>
+          <strong>Customer:</strong>
+          {{ rental.customerName }}
+        </p>
+
+  <p>
+  <strong>Vehicle:</strong>
+  {{ rental.vehicleBrand || 'Vehicle #' + rental.vehicleId }}
+</p>
+        <p>
+          <strong>Rental Days:</strong>
+          {{ rental.rentalDays }}
+        </p>
+
+        <p>
+          <strong>Total Amount:</strong>
+          ₹{{ rental.totalAmount }}
+        </p>
+
+        <button
+          (click)="returnVehicle(rental.id)">
+          Return Vehicle
+        </button>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>
