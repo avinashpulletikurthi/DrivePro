@@ -74,7 +74,7 @@ if (this.password !== this.confirmPassword) {
     }
 
     this.http.post<any>(
-      this.apiUrl,
+     this.apiUrl + '/users/register',
       {
         username: this.username,
         password: this.password
