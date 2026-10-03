@@ -11,28 +11,35 @@ export class RentalService {
   constructor(private http: HttpClient) {}
 
   rentVehicle(rental: any) {
-    return this.http.post<any>(this.apiUrl, rental);
+    return this.http.post<any>(
+      `${this.apiUrl}/rentals`,
+      rental
+    );
   }
 
   returnVehicle(rentalId: number) {
     return this.http.put<any>(
-      `${this.apiUrl}/${rentalId}/return`,
+      `${this.apiUrl}/rentals/${rentalId}/return`,
       {}
     );
   }
 
   getRentals() {
-    return this.http.get<any[]>(this.apiUrl);
+    return this.http.get<any[]>(
+      `${this.apiUrl}/rentals`
+    );
   }
+
   cancelRental(rentalId: number, userId: number) {
-  return this.http.put<any>(
-    `${this.apiUrl}/cancel/${rentalId}?userId=${userId}`,
-    {}
-  );
-}
-getAllRentals() {
-  return this.http.get<any[]>(
-    `${this.apiUrl}/admin`
-  );
-}
+    return this.http.put<any>(
+      `${this.apiUrl}/rentals/cancel/${rentalId}?userId=${userId}`,
+      {}
+    );
+  }
+
+  getAllRentals() {
+    return this.http.get<any[]>(
+      `${this.apiUrl}/rentals/admin`
+    );
+  }
 }
