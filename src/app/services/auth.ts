@@ -23,41 +23,77 @@ export class AuthService {
     );
   }
 
-  saveToken(token: string) {
-    localStorage.setItem('token', token);
+saveToken(token: string) {
+  if (typeof localStorage === 'undefined') {
+    return;
   }
 
-  getToken() {
-    return localStorage.getItem('token');
+  localStorage.setItem('token', token);
+}
+
+getToken() {
+  if (typeof localStorage === 'undefined') {
+    return null;
   }
 
-  getRole(): string | null {
+  return localStorage.getItem('token');
+}
 
-    const token = this.getToken();
+isLoggedIn(): boolean {
+  return this.getToken() !== null;
+}
 
-    if (!token) {
-      return null;
-    }
+getRole(): string | null {
+  const token = this.getToken();
 
-    try {
-
-      const payload = JSON.parse(
-        atob(token.split('.')[1])
-      );
-
-      return payload.role;
-
-    } catch {
-
-      return null;
-    }
+  if (!token) {
+    return null;
   }
 
-  isAdmin(): boolean {
-    return this.getRole() === 'ADMIN';
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.role;
+  } catch {
+    return null;
+  }
+}
+getUserId(): number | null {
+  const token = this.getToken();
+
+  if (!token) {
+    return null;
   }
 
-  logout() {
-    localStorage.removeItem('token');
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.userId || payload.id || null;
+  } catch {
+    return null;
   }
+}
+getUserInfo(): any {
+  const token = this.getToken();
+
+  if (!token) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(atob(token.split('.')[1]));
+  } catch {
+    return null;
+  }
+}
+
+isAdmin(): boolean {
+  return this.getRole() === 'ADMIN';
+}
+
+logout() {
+  if (typeof localStorage === 'undefined') {
+    return;
+  }
+
+  localStorage.removeItem('token');
+}
 }

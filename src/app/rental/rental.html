@@ -26,11 +26,23 @@
 
   <label>Rental Days</label>
 
+  <div class="form-field">
+  <label>Rental From</label>
   <input
-    type="number"
-    [(ngModel)]="rentalDays"
-    min="1"
-  />
+    type="date"
+    [(ngModel)]="startDate"
+    [min]="startDate"
+  >
+</div>
+
+<div class="form-field">
+  <label>Rental To</label>
+  <input
+    type="date"
+    [(ngModel)]="endDate"
+    [min]="startDate"
+  >
+</div>
 
   <p>
     <strong>Total Amount:</strong>

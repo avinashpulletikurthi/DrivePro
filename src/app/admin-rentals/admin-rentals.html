@@ -1,0 +1,101 @@
+<div class="admin-rentals-container">
+
+  <div class="page-header">
+    <div>
+      <h2>Rental Management</h2>
+      <p>View and manage all vehicle rentals.</p>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+    <div class="error-message">
+      {{ errorMessage }}
+    </div>
+  }
+
+@if (rentals().length === 0 && !errorMessage) {
+        <div class="empty-state">
+      <h3>No rentals found</h3>
+      <p>There are no rental records available.</p>
+    </div>
+  }
+
+@if (rentals().length > 0) {
+    <div class="rental-table-wrapper">
+
+      <table class="rental-table">
+
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Customer</th>
+            <th>Vehicle ID</th>
+            <th>User ID</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Days</th>
+            <th>Amount</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          @for (rental of rentals(); track rental.id) {
+
+            <tr>
+
+              <td>{{ $index + 1 }}</td>
+
+              <td>
+                {{ rental.customerName }}
+              </td>
+
+              <td>
+                {{ rental.vehicleId }}
+              </td>
+
+              <td>
+                {{ rental.userId }}
+              </td>
+
+              <td>
+                {{ rental.startDate || '-' }}
+              </td>
+
+              <td>
+                {{ rental.endDate || '-' }}
+              </td>
+
+              <td>
+                {{ rental.rentalDays }}
+              </td>
+
+              <td>
+                ₹{{ rental.totalAmount }}
+              </td>
+
+              <td>
+                <span
+  class="status"
+  [class.active]="rental.status === 'ACTIVE'"
+  [class.returned]="rental.status === 'RETURNED'"
+  [class.cancelled]="rental.status === 'CANCELLED'"
+>
+  {{ rental.status || 'N/A' }}
+</span>
+              </td>
+
+            </tr>
+
+          }
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  }
+
+</div>

@@ -1,0 +1,215 @@
+<div class="home-container">
+
+  <!-- HERO SECTION -->
+  <section class="hero-section">
+
+    <div class="hero-content">
+
+      <p class="welcome-text">
+        WELCOME TO DrivePro, your trusted vehicle rental platform.
+      </p>
+
+      <h1>
+        Rent the right vehicle.
+        <span>Start your journey.</span>
+      </h1>
+
+      <p class="hero-description">
+        Browse available vehicles, make a booking, and manage your
+        rentals from one simple platform.
+      </p>
+
+      <div class="hero-actions">
+
+        <a
+          routerLink="/vehicles"
+          class="primary-button"
+        >
+          Browse Vehicles
+        </a>
+
+        <a
+          routerLink="/rentals"
+          class="secondary-button"
+        >
+          My Rentals
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div class="hero-card">
+
+      <div class="car-icon">
+        🚗
+      </div>
+
+      <h2>
+        Easy & Fast
+      </h2>
+
+      <p>
+        Find your vehicle, book it and enjoy your journey.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- VEHICLE STATISTICS -->
+  <section class="stats-section">
+
+    <div class="stat-card">
+
+      <span class="stat-icon">
+        🚘
+      </span>
+
+      <div>
+
+        <p class="stat-label">
+          Total Vehicles
+        </p>
+
+        <h2>
+          {{ totalVehicles() }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span class="stat-icon">
+        ✅
+      </span>
+
+      <div>
+
+        <p class="stat-label">
+          Available Vehicles
+        </p>
+
+        <h2>
+          {{ availableVehicles() }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span class="stat-icon">
+        📅
+      </span>
+
+      <div>
+
+        <p class="stat-label">
+          Booked Vehicles
+        </p>
+
+        <h2>
+          {{ bookedVehicles() }}
+        </h2>
+
+      </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+      <span class="stat-icon">
+        🚗
+      </span>
+
+      <div>
+
+        <p class="stat-label">
+          Rented Vehicles
+        </p>
+
+        <h2>
+          {{ rentedVehicles() }}
+        </h2>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FEATURES -->
+  <section class="features-section">
+
+    <h2>
+      Why use our platform?
+    </h2>
+
+    <div class="features-grid">
+
+      <div class="feature-card">
+
+        <div class="feature-icon">
+          🚘
+        </div>
+
+        <h3>
+          Wide Selection
+        </h3>
+
+        <p>
+          Choose from multiple vehicles based on your requirements.
+        </p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <div class="feature-icon">
+          ⚡
+        </div>
+
+        <h3>
+          Quick Booking
+        </h3>
+
+        <p>
+          Check availability and book your vehicle with ease.
+        </p>
+
+      </div>
+
+
+      <div class="feature-card">
+
+        <div class="feature-icon">
+          🔐
+        </div>
+
+        <h3>
+          Secure Access
+        </h3>
+
+        <p>
+          Your account is protected using JWT authentication and
+          role-based authorization.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

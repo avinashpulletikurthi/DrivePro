@@ -1,21 +1,62 @@
-<div class="login-container">
+<div class="login-page">
 
-  <h2>Vehicle Rental Login</h2>
+  <div class="login-card">
 
-  <input
-    type="text"
-    placeholder="Username"
-    [(ngModel)]="username"
-  />
+    <div class="login-icon">
+      🚘
+    </div>
 
-  <input
-    type="password"
-    placeholder="Password"
-    [(ngModel)]="password"
-  />
+   <h1>Welcome to DrivePro</h1>
+    <p class="login-subtitle">
+      Sign in to continue to DrivePro
+    </p>
 
-  <button (click)="login()">Login</button>
+    <div class="input-group">
+      <label>Username</label>
 
-  <p *ngIf="errorMessage">{{ errorMessage }}</p>
+      <input
+        type="text"
+        [(ngModel)]="username"
+        placeholder="Enter your username"
+      />
+    </div>
+
+    <div class="input-group">
+      <label>Password</label>
+
+      <input
+        type="password"
+        [(ngModel)]="password"
+        placeholder="Enter your password"
+      />
+    </div>
+
+    @if (errorMessage) {
+      <div class="error-message">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <button
+      class="login-button"
+      (click)="login()">
+      Sign In
+    </button>
+
+    <div class="register-link">
+      <span>Don't have an account?</span>
+
+      <button
+        type="button"
+        (click)="goToRegister()">
+        Create Account
+      </button>
+    </div>
+
+    <div class="login-footer">
+      Secure JWT Authentication
+    </div>
+
+  </div>
 
 </div>

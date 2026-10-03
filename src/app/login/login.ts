@@ -34,8 +34,11 @@ export class Login {
 
   console.log('TOKEN SAVED:', localStorage.getItem('token'));
 
-  this.router.navigate(['/vehicles']);
+  this.router.navigate(['/home']);
 }
     });
   }
+  goToRegister(): void {
+  this.router.navigate(['/register']);
+}
 }

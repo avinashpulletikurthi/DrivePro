@@ -1,56 +1,843 @@
-<div class="vehicles-container">
+<div class="vehicles-page">
 
-  <h2>Available Vehicles</h2>
+  <!-- =========================
+       HEADER
+       ========================= -->
 
-  <div class="vehicle-grid">
+  <div class="vehicles-header">
 
-    @for (vehicle of vehicles(); track vehicle.id) {
+    <div>
 
-      <div class="vehicle-card">
+      <p class="eyebrow">
+        PREMIUM MOBILITY
+      </p>
 
-        <h3>
-          {{ vehicle.brand }} {{ vehicle.model }}
-        </h3>
+      <h1>
+        Find Your Perfect Ride
+      </h1>
 
-        <p>
-          <strong>Vehicle Number:</strong>
-          {{ vehicle.vehicleNumber }}
-        </p>
+      <p class="subtitle">
+        Choose from our collection of well-maintained vehicles
+        and start your journey.
+      </p>
 
-        <p>
-          <strong>Type:</strong>
-          {{ vehicle.type }}
-        </p>
+    </div>
 
-        <p>
-          <strong>Price:</strong>
-          ₹{{ vehicle.pricePerDay }} / day
-        </p>
 
-        <p>
-          <strong>Status:</strong>
-          {{ vehicle.available ? 'Available' : 'Not Available' }}
-        </p>
+    <div class="vehicle-count">
 
-        @if (vehicle.available) {
-          <button (click)="openRental(vehicle)">
-            Rent Vehicle
-          </button>
-        }
+      <span>
+        {{ filteredVehicles().length }}
+      </span>
 
-      </div>
+      <small>
+        Vehicles
+      </small>
 
-    }
+    </div>
 
   </div>
 
 
-  @if (selectedVehicle()) {
+  <!-- =========================
+       SEARCH + FILTERS
+       ========================= -->
 
-    <app-rental
-      [vehicle]="selectedVehicle()">
-    </app-rental>
+  <section class="filters-panel">
+
+    <div class="search-box">
+
+      <span class="search-icon">
+        🔎
+      </span>
+
+      <input
+        type="text"
+        placeholder="Search by brand, model or registration..."
+        (input)="setSearch($event)"
+      />
+
+    </div>
+<button
+  type="button"
+  class="clear-filters-button"
+  (click)="clearFilters()"
+>
+  Clear Filters
+</button>
+
+    <div class="filter-group">
+
+      <label>
+        Status
+      </label>
+
+      <select
+        (change)="setStatus($event)"
+        [value]="selectedStatus()"
+      >
+
+        <option value="ALL">
+          All Vehicles
+        </option>
+
+        <option value="AVAILABLE">
+          Available
+        </option>
+
+        <option value="BOOKED">
+          Booked
+        </option>
+
+        <option value="RENTED">
+          Rented
+        </option>
+
+        <option value="MAINTENANCE">
+          Maintenance
+        </option>
+
+        <option value="INACTIVE">
+          Inactive
+        </option>
+
+      </select>
+
+    </div>
+
+
+
+    <div class="filter-group">
+
+      <label>
+        Sort
+      </label>
+
+      <select
+        (change)="setSort($event)"
+        [value]="selectedSort()"
+      >
+
+        <option value="DEFAULT">
+          Default
+        </option>
+
+        <option value="PRICE_LOW">
+          Price: Low to High
+        </option>
+
+        <option value="PRICE_HIGH">
+          Price: High to Low
+        </option>
+
+        <option value="BRAND">
+          Brand: A to Z
+        </option>
+
+      </select>
+
+    </div>
+<div class="filter-group price-filter">
+
+  <label>
+    Min Price
+  </label>
+
+  <input
+    type="number"
+    placeholder="₹ Min"
+    [value]="minPrice() ?? ''"
+    (input)="minPrice.set($any($event.target).value ? +$any($event.target).value : null)"
+    min="0"
+  />
+
+</div>
+
+<div class="filter-group price-filter">
+
+  <label>
+    Max Price
+  </label>
+
+  <input
+    type="number"
+    placeholder="₹ Max"
+    [value]="maxPrice() ?? ''"
+    (input)="maxPrice.set($any($event.target).value ? +$any($event.target).value : null)"
+    min="0"
+  />
+
+</div>
+<div class="filter-group">
+
+  <label>
+    Vehicle Type
+  </label>
+
+  <select
+    (change)="selectedType.set($any($event.target).value)"
+    [value]="selectedType()"
+  >
+    <option value="ALL">All Types</option>
+    <option value="SUV">SUV</option>
+    <option value="SEDAN">Sedan</option>
+    <option value="HATCHBACK">Hatchback</option>
+    <option value="MUV">MUV</option>
+  </select>
+
+</div>
+
+    @if (authService.isAdmin()) {
+
+      <button
+        class="add-vehicle-button"
+        (click)="openAddVehicle()"
+      >
+        + Add Vehicle
+      </button>
+
+    }
+
+  </section>
+
+
+  <!-- =========================
+       VEHICLE GRID
+       ========================= -->
+
+  @if (filteredVehicles().length > 0) {
+
+    <div class="vehicle-grid">
+
+      @for (
+        vehicle of filteredVehicles();
+        track vehicle.id
+      ) {
+
+        <div
+          class="vehicle-card"
+          [class.unavailable]="!canRent(vehicle)"
+          [class.maintenance]="vehicle.status === 'MAINTENANCE'"
+          [class.inactive]="vehicle.status === 'INACTIVE'"
+        >
+
+          <!-- IMAGE -->
+
+          <div class="vehicle-image">
+
+            <div class="vehicle-glow"></div>
+
+            <span class="vehicle-type">
+              {{ vehicle.type }}
+            </span>
+
+            <img
+              class="vehicle-image-photo"
+              [src]="getVehicleImage(vehicle)"
+              [alt]="vehicle.brand + ' ' + vehicle.model"
+            />
+
+          </div>
+
+
+          <!-- CONTENT -->
+
+          <div class="vehicle-content">
+
+            <!-- TITLE -->
+
+            <div class="vehicle-title">
+
+              <div>
+
+                <h2>
+                  {{ vehicle.brand }}
+                </h2>
+
+                <p>
+                  {{ vehicle.model }}
+                </p>
+
+              </div>
+
+
+              <span
+                class="status"
+                [class.available]="vehicle.status === 'AVAILABLE'"
+                [class.booked]="vehicle.status === 'BOOKED'"
+                [class.rented]="vehicle.status === 'RENTED'"
+                [class.maintenance-status]="vehicle.status === 'MAINTENANCE'"
+                [class.inactive-status]="vehicle.status === 'INACTIVE'"
+              >
+
+                {{ getStatusLabel(vehicle.status) }}
+
+              </span>
+
+            </div>
+
+
+            <!-- DETAILS -->
+
+            <div class="vehicle-details">
+
+              <div>
+
+                <span>
+                  REGISTRATION
+                </span>
+
+                <strong>
+                  {{ vehicle.vehicleNumber }}
+                </strong>
+
+              </div>
+
+
+              <div>
+
+                <span>
+                  TYPE
+                </span>
+
+                <strong>
+                  {{ vehicle.type }}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- STATUS DESCRIPTION -->
+
+            <p class="status-description">
+
+              {{ getStatusDescription(vehicle.status) }}
+
+            </p>
+
+
+            <!-- FOOTER -->
+
+            <div class="vehicle-footer">
+
+              <div class="price">
+
+                <span>
+                  Starting from
+                </span>
+
+                <strong>
+                  ₹{{ vehicle.pricePerDay }}
+                </strong>
+
+                <small>
+                  / day
+                </small>
+
+              </div>
+
+
+              @if (canRent(vehicle)) {
+
+                <button
+                  class="rent-button"
+                  (click)="openRental(vehicle)"
+                >
+
+                  Rent Now
+
+                  <span>
+                    →
+                  </span>
+
+                </button>
+
+              } @else {
+
+                <button
+                  class="rent-button disabled"
+                  disabled
+                >
+
+                  {{ getStatusDescription(vehicle.status) }}
+
+                </button>
+
+              }
+
+            </div>
+
+
+            <!-- ADMIN CONTROLS -->
+
+            @if (authService.isAdmin()) {
+
+              <div class="admin-controls">
+
+                <div class="admin-label">
+                  ADMIN STATUS
+                </div>
+
+                <select
+                  [value]="vehicle.status"
+                  (change)="updateVehicleStatus(vehicle, $event)"
+                >
+
+                  <option value="AVAILABLE">
+                    Available
+                  </option>
+
+                  <option value="BOOKED">
+                    Booked
+                  </option>
+
+                  <option value="RENTED">
+                    Rented
+                  </option>
+
+                  <option value="MAINTENANCE">
+                    Maintenance
+                  </option>
+
+                  <option value="INACTIVE">
+                    Inactive
+                  </option>
+
+                </select>
+
+              </div>
+              <button
+  class="edit-vehicle-btn"
+  type="button"
+  (click)="openEditVehicle(vehicle)">
+  Edit Vehicle
+</button>
+              <button
+  class="delete-vehicle-btn"
+  type="button"
+  (click)="deleteVehicle(vehicle)">
+  Delete Vehicle
+</button>
+
+            }
+
+          </div>
+
+        </div>
+
+      }
+
+    </div>
+
+  } @else {
+
+    <!-- EMPTY STATE -->
+
+    <div class="empty-state">
+
+      <div class="empty-icon">
+        🚘
+      </div>
+
+      <h2>
+        No Vehicles Found
+      </h2>
+
+      <p>
+        No vehicles match your current search or filter.
+      </p>
+
+      <button
+        class="clear-button"
+        (click)="searchText.set(''); selectedStatus.set('ALL'); selectedSort.set('DEFAULT')"
+      >
+        Clear Filters
+      </button>
+
+    </div>
 
   }
+
+
+  <!-- =========================
+       RENTAL MODAL
+       ========================= -->
+
+  @if (selectedVehicle()) {
+
+    <div
+      class="rental-modal-overlay"
+      (click)="closeRental()"
+    >
+
+      <div
+        class="rental-modal"
+        (click)="$event.stopPropagation()"
+      >
+
+        <button
+          type="button"
+          class="rental-close"
+          (click)="closeRental()"
+        >
+          ×
+        </button>
+
+<app-rental
+  [vehicle]="selectedVehicle()"
+  (rentalCompleted)="closeRental(); loadVehicles()">
+</app-rental>
+
+      </div>
+
+    </div>
+
+  }
+
+
+  <!-- =========================
+       ADMIN ADD VEHICLE MODAL
+       ========================= -->
+
+  @if (showAddVehicle()) {
+
+  <div class="modal-overlay">
+
+    <div class="add-vehicle-modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <p class="eyebrow">
+            ADMIN
+          </p>
+
+          <h2>
+            Add New Vehicle
+          </h2>
+
+        </div>
+
+        <button
+          type="button"
+          class="close-button"
+          (click)="closeAddVehicle()"
+        >
+          ×
+        </button>
+
+      </div>
+
+      <div class="form-grid">
+
+        <div class="form-field">
+
+          <label>
+            Vehicle Number
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="newVehicle.vehicleNumber"
+            placeholder="KA01AB1234"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Brand
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="newVehicle.brand"
+            placeholder="Toyota"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Model
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="newVehicle.model"
+            placeholder="Fortuner"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Type
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="newVehicle.type"
+            placeholder="SUV"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Price Per Day
+          </label>
+
+          <input
+            type="number"
+            [(ngModel)]="newVehicle.pricePerDay"
+            min="1"
+            placeholder="2500"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Initial Status
+          </label>
+
+          <select
+            [(ngModel)]="newVehicle.status"
+          >
+
+            <option value="AVAILABLE">
+              Available
+            </option>
+
+            <option value="MAINTENANCE">
+              Maintenance
+            </option>
+
+            <option value="INACTIVE">
+              Inactive
+            </option>
+
+          </select>
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Vehicle Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onImageSelected($event)"
+          />
+
+          @if (imagePreview) {
+
+            <div class="image-preview">
+
+              <img
+                [src]="imagePreview"
+                alt="Vehicle preview"
+              />
+
+            </div>
+
+          }
+
+          <small>
+            Optional. If no image is selected, DrivePro will use a default image.
+          </small>
+
+        </div>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button
+          type="button"
+          class="cancel-button"
+          (click)="closeAddVehicle()"
+        >
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="save-button"
+          (click)="addVehicle()"
+        >
+          Add Vehicle
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
+
+@if (showEditVehicle() && editingVehicle()) {
+
+  <div
+    class="rental-modal-overlay"
+    (click)="closeEditVehicle()"
+  >
+
+    <div
+      class="rental-modal edit-vehicle-modal"
+      (click)="$event.stopPropagation()"
+    >
+
+      <button
+        type="button"
+        class="rental-close"
+        (click)="closeEditVehicle()"
+      >
+        ×
+      </button>
+
+      <h2>
+        Edit Vehicle
+      </h2>
+
+      <div class="edit-form">
+
+        <div class="form-field">
+
+          <label>
+            Vehicle Number
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editingVehicle().vehicleNumber"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Brand
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editingVehicle().brand"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Model
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editingVehicle().model"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Type
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editingVehicle().type"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Price Per Day
+          </label>
+
+          <input
+            type="number"
+            min="1"
+            [(ngModel)]="editingVehicle().pricePerDay"
+          />
+
+        </div>
+
+        <div class="form-field">
+
+          <label>
+            Vehicle Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            (change)="onEditImageSelected($event)"
+          />
+
+          @if (editImagePreview) {
+
+            <div class="image-preview">
+
+              <img
+                [src]="editImagePreview"
+                alt="Vehicle preview"
+              />
+
+            </div>
+
+          }
+
+          <small>
+            Select a new image to replace the current vehicle image.
+          </small>
+
+        </div>
+
+        <div class="edit-actions">
+
+          <button
+            type="button"
+            class="cancel-edit-btn"
+            (click)="closeEditVehicle()"
+          >
+            Cancel
+          </button>
+
+          <button
+            type="button"
+            class="save-edit-btn"
+            (click)="saveEditedVehicle()"
+          >
+            Save Changes
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+}
 
 </div>

@@ -1,0 +1,138 @@
+.register-page {
+  min-height: calc(100vh - 58px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  background:
+    radial-gradient(
+      circle at top left,
+      rgba(37, 99, 235, 0.18),
+      transparent 35%
+    ),
+    #070b14;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 460px;
+  padding: 42px;
+  border-radius: 22px;
+  background: #111827;
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+  color: #f8fafc;
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.welcome-text {
+  margin: 0 0 10px;
+  color: #38bdf8;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.register-header h1 {
+  margin: 0 0 10px;
+  font-size: 34px;
+}
+
+.register-header p:last-child {
+  margin: 0;
+  color: #94a3b8;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #cbd5e1;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  outline: none;
+  background: #070b14;
+  color: #f8fafc;
+  font-size: 15px;
+}
+
+.form-group input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.form-group input::placeholder {
+  color: #64748b;
+}
+
+form > button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(90deg, #2563eb, #06b6d4);
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+form > button:hover {
+  opacity: 0.92;
+}
+
+.error-message {
+  margin: 10px 0 18px;
+  padding: 11px;
+  border-radius: 8px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #f87171;
+  text-align: center;
+  font-size: 14px;
+}
+
+.success-message {
+  margin: 10px 0 18px;
+  padding: 11px;
+  border-radius: 8px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #4ade80;
+  text-align: center;
+  font-size: 14px;
+}
+
+.login-link {
+  margin-top: 24px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+}
+
+.link-button {
+  margin-left: 6px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #38bdf8;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.link-button:hover {
+  text-decoration: underline;
+}

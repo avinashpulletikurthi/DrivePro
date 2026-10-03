@@ -3,53 +3,81 @@
   <h2>Rental History</h2>
 
   @if (message) {
-    <p class="success-message">
-      {{ message }}
-    </p>
+    <p class="success-message">{{ message }}</p>
   }
 
   @if (errorMessage) {
-    <p class="error-message">
-      {{ errorMessage }}
-    </p>
+    <p class="error-message">{{ errorMessage }}</p>
   }
 
-  <div class="rental-grid">
+  @if (rentals().length === 0) {
 
-    @for (rental of rentals(); track rental.id)  {
+    <div class="empty-rentals">
 
-      <div class="rental-card">
-
-        <h3>Rental #{{ rental.id }}</h3>
-
-        <p>
-          <strong>Customer:</strong>
-          {{ rental.customerName }}
-        </p>
-
-  <p>
-  <strong>Vehicle:</strong>
-  {{ rental.vehicleBrand || 'Vehicle #' + rental.vehicleId }}
-</p>
-        <p>
-          <strong>Rental Days:</strong>
-          {{ rental.rentalDays }}
-        </p>
-
-        <p>
-          <strong>Total Amount:</strong>
-          ₹{{ rental.totalAmount }}
-        </p>
-
-        <button
-          (click)="returnVehicle(rental.id)">
-          Return Vehicle
-        </button>
-
+      <div class="empty-icon">
+        🚗
       </div>
 
-    }
+      <h3>No Rentals Yet</h3>
 
-  </div>
+      <p>
+        You haven't rented any vehicles yet.
+        Browse our available vehicles and start your first rental.
+      </p>
+
+      <button routerLink="/vehicles">
+        Browse Vehicles
+      </button>
+
+    </div>
+
+  } @else {
+
+    <div class="rental-grid">
+
+      @for (rental of rentals(); track rental.id) {
+
+        <div class="rental-card">
+
+          <h3>Rental {{ $index + 1 }}</h3>
+
+          <p>
+            <strong>Customer:</strong>
+            {{ rental.customerName }}
+          </p>
+
+          <p>
+            <strong>Vehicle:</strong>
+            {{ rental.vehicleBrand || 'Vehicle #' + rental.vehicleId }}
+          </p>
+<p><strong>Rental From:</strong> {{ rental.startDate }}</p>
+<p><strong>Rental To:</strong> {{ rental.endDate }}</p>
+          <p>
+
+            <strong>Rental Days:</strong>
+            {{ rental.rentalDays }}
+          </p>
+          <p><strong>Status:</strong> {{ rental.status }}</p>
+
+          <p>
+            <strong>Total Amount:</strong>
+            ₹{{ rental.totalAmount }}
+          </p>
+
+          <button
+            (click)="returnVehicle(rental.id)">
+            Return Vehicle
+          </button>
+          @if (rental.status === 'ACTIVE') {
+  <button (click)="cancelRental(rental.id)">Cancel Rental</button>
+}
+
+        </div>
+
+      }
+
+    </div>
+
+  }
 
 </div>

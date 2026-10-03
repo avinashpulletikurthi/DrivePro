@@ -1,0 +1,21 @@
+<svg width="800" height="500" viewBox="0 0 800 500" xmlns="http://www.w3.org/2000/svg">
+
+  <rect width="800" height="500" fill="#111827"></rect>
+
+  <g fill="none" stroke="#64748b" stroke-width="10">
+    <rect x="180" y="150" width="440" height="220" rx="28"></rect>
+    <circle cx="270" cy="370" r="45"></circle>
+    <circle cx="530" cy="370" r="45"></circle>
+  </g>
+
+  <path d="M250 150 L315 90 H485 L550 150" fill="none" stroke="#64748b" stroke-width="10"></path>
+
+  <text x="400" y="260" text-anchor="middle" fill="#94a3b8" font-family="Arial, sans-serif" font-size="34" font-weight="600">
+    NO IMAGE AVAILABLE
+  </text>
+
+  <text x="400" y="305" text-anchor="middle" fill="#64748b" font-family="Arial, sans-serif" font-size="20">
+    Vehicle image not provided
+  </text>
+
+</svg>

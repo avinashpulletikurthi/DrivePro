@@ -1,12 +1,13 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { RentalService } from '../services/rental';
 import { VehicleService } from '../services/vehicle';
-
+import { AuthService } from '../services/auth';
 @Component({
   selector: 'app-rental-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './rental-history.html',
   styleUrl: './rental-history.css'
 })
@@ -18,9 +19,10 @@ export class RentalHistory implements OnInit {
   errorMessage = '';
 
   constructor(
-    private rentalService: RentalService,
-    private vehicleService: VehicleService
-  ) {}
+  private rentalService: RentalService,
+  private vehicleService: VehicleService,
+  private authService: AuthService
+) {}
 
   ngOnInit(): void {
     this.loadRentals();
@@ -91,4 +93,36 @@ export class RentalHistory implements OnInit {
 
     });
   }
+  cancelRental(rentalId: number): void {
+
+  const confirmed = confirm(
+    'Are you sure you want to cancel this rental?'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  const userId = this.authService.getUserId();
+
+if (userId === null) {
+  this.errorMessage = 'Unable to identify logged-in user.';
+  return;
+}
+
+  this.rentalService.cancelRental(rentalId, userId).subscribe({
+    next: () => {
+      this.message = 'Rental cancelled successfully!';
+      this.errorMessage = '';
+      this.loadRentals();
+    },
+    error: (error) => {
+      console.error('Cancel rental error:', error);
+
+      this.errorMessage =
+        error.error?.message ||
+        'Unable to cancel rental.';
+    }
+  });
+}
 }

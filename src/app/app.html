@@ -1,29 +1,60 @@
-<nav class="navbar">
+@if (showNavbar()) {
 
-  <div class="logo">
-    Vehicle Rental System
-  </div>
+  <nav class="navbar">
 
-  <div class="nav-links">
+    <div
+      class="logo"
+      routerLink="/home"
+    >
+      DrivePro
+    </div>
 
-    <span class="role">
-      {{ authService.getRole() }}
-    </span>
+    <div class="nav-links">
 
-    <a routerLink="/vehicles">
-      Vehicles
-    </a>
+      <a
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+      >
+        Home
+      </a>
 
-    <a routerLink="/rentals">
-      Rental History
-    </a>
+      @if (authService.isAdmin()) {
 
-    <a (click)="logout()">
-      Logout
-    </a>
+        <a
+          routerLink="/dashboard"
+          routerLinkActive="active"
+        >
+          Dashboard
+        </a>
 
-  </div>
+      }
 
-</nav>
+      <a
+        routerLink="/vehicles"
+        routerLinkActive="active"
+      >
+        Vehicles
+      </a>
+
+      <a
+        routerLink="/rentals"
+        routerLinkActive="active"
+      >
+        My Rentals
+      </a>
+
+      <a
+        class="logout-link"
+        (click)="logout()"
+      >
+        Logout
+      </a>
+
+    </div>
+
+  </nav>
+
+}
 
 <router-outlet></router-outlet>

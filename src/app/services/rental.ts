@@ -24,4 +24,15 @@ export class RentalService {
   getRentals() {
     return this.http.get<any[]>(this.apiUrl);
   }
+  cancelRental(rentalId: number, userId: number) {
+  return this.http.put<any>(
+    `${this.apiUrl}/cancel/${rentalId}?userId=${userId}`,
+    {}
+  );
+}
+getAllRentals() {
+  return this.http.get<any[]>(
+    `${this.apiUrl}/admin`
+  );
+}
 }
