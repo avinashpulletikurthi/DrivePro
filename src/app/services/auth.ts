@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class AuthService {
 
-  private apiUrl = 'http://localhost:8080/auth/login';
+  private apiUrl = 'https://vehicle-rental-system-production-2800.up.railway.app';
 
   constructor(private http: HttpClient) {}
 

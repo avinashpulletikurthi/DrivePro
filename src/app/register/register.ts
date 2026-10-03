@@ -20,7 +20,7 @@ export class Register {
   message = '';
   errorMessage = '';
 
-  private apiUrl = 'http://localhost:8080/users/register';
+  private apiUrl = 'https://vehicle-rental-system-production-2800.up.railway.app';
 
   constructor(
     private http: HttpClient,

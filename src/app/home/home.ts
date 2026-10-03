@@ -16,7 +16,7 @@ export class Home implements OnInit {
   bookedVehicles = signal(0);
   rentedVehicles = signal(0);
 
-  private apiUrl = 'http://localhost:8080/vehicles';
+  private apiUrl = 'https://vehicle-rental-system-production-2800.up.railway.app';
 
   constructor(private http: HttpClient) {}
 

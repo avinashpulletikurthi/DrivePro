@@ -11,7 +11,7 @@ export class AdminDashboard implements OnInit {
 
   dashboard: any = null;
 
-  private apiUrl = 'http://localhost:8080/admin/dashboard';
+  private apiUrl = 'https://vehicle-rental-system-production-2800.up.railway.app';
 
   constructor(
     private http: HttpClient,
