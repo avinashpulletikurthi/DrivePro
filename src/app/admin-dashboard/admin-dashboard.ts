@@ -23,7 +23,7 @@ export class AdminDashboard implements OnInit {
   }
 
   loadDashboard(): void {
-    this.http.get<any>(this.apiUrl).subscribe({
+    this.http.get<any>(this.apiUrl + '/admin/dashboard').subscribe({
       next: (data) => {
         console.log('DASHBOARD DATA:', data);
 
