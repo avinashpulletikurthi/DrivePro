@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class VehicleService {
 
-  private apiUrl = 'https://vehicle-rental-system-production-2800.up.railway.app';
+  private apiUrl = 'http://localhost:8080/vehicles';
 
   constructor(
     private http: HttpClient
@@ -15,16 +15,16 @@ export class VehicleService {
   // GET ALL VEHICLES
   getVehicles() {
     return this.http.get<any[]>(
-      this.apiUrl
-    );
+  this.apiUrl + '/vehicles'
+);
   }
 
   // ADD VEHICLE
   addVehicle(vehicle: any) {
     return this.http.post<any>(
-      this.apiUrl,
-      vehicle
-    );
+  this.apiUrl + '/vehicles',
+  vehicle
+);
   }
 
   // UPDATE VEHICLE STATUS
@@ -33,7 +33,7 @@ export class VehicleService {
     status: string
   ) {
     return this.http.put(
-      `${this.apiUrl}/${vehicleId}/status`,
+     `${this.apiUrl}/vehicles/${vehicleId}/status`,
       {},
       {
         params: {
@@ -45,13 +45,13 @@ export class VehicleService {
   }
   deleteVehicle(vehicleId: number) {
   return this.http.delete(
-    `${this.apiUrl}/${vehicleId}`,
+   `${this.apiUrl}/vehicles/${vehicleId}`,
     { responseType: 'text' }
   );
 }
 updateVehicle(vehicleId: number, vehicle: any) {
   return this.http.put<any>(
-    `${this.apiUrl}/${vehicleId}`,
+    `${this.apiUrl}/vehicles/${vehicleId}`,
     vehicle
   );
 }
