@@ -17,6 +17,11 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
+            "security": {
+  "allowedHosts": [
+    "drivepro-production.up.railway.app"
+  ]
+},
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": [
@@ -24,6 +29,7 @@
                 "glob": "**/*",
                 "input": "public"
               }
+              
             ],
             "styles": [
               "src/styles.css"
